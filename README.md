@@ -6,6 +6,8 @@ Adds more object properties to the object info selection text in the level edito
 - Position (X, Y)
 - Rotation
 - Scale (X, Y)
+- Base Color (ID and HSV)
+- Detail Color (ID and HSV)
 
 # License
 This mod is licensed under the [MIT License](./LICENSE).

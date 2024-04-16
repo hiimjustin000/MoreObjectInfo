@@ -1,10 +1,11 @@
 {
-    "geode": "2.0.0-beta.22",
+    "geode": "2.0.0-beta.23",
     "gd": {
         "android": "2.205",
-        "win": "2.204"
+        "win": "2.204",
+        "mac": "2.200"
     },
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "id": "hiimjustin000.more_object_info",
     "name": "More Object Info",
     "developer": "hiimjustin000",
@@ -32,6 +33,18 @@
         "show-object-scale": {
             "name": "Show Object Scale",
             "description": "Show the object's scale in the object info selection text.",
+            "type": "bool",
+            "default": true
+        },
+        "show-object-base-color": {
+            "name": "Show Object Base Color",
+            "description": "Show the object's base color in the object info selection text.",
+            "type": "bool",
+            "default": true
+        },
+        "show-object-detail-color": {
+            "name": "Show Object Detail Color",
+            "description": "Show the object's detail color in the object info selection text.",
             "type": "bool",
             "default": true
         }
