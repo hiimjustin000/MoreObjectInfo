@@ -34,31 +34,29 @@ class $modify(MOIEditorUI, EditorUI) {
             if (Mod::get()->getSettingValue<bool>("show-object-id")) ss << "ID: " << m_selectedObject->m_objectID << "\n";
             if (Mod::get()->getSettingValue<bool>("show-object-position"))
                 ss << "Position: " << m_selectedObject->getPositionX() << ", " << m_selectedObject->getPositionY() - 90.0f << "\n";
-            if (Mod::get()->getSettingValue<bool>("show-object-rotation")) ss << "Rotation: " << m_selectedObject->getRotation() << "\n";
-            if (Mod::get()->getSettingValue<bool>("show-object-scale")) ss << "Scale: " << m_selectedObject->getScaleX() << ", " << m_selectedObject->getScaleY() << "\n";
-            if (Mod::get()->getSettingValue<bool>("show-object-base-color") && m_selectedObject->m_baseColor != nullptr) {
-                auto baseColor = m_selectedObject->m_baseColor;
-                auto colorID = colorIDToName(baseColor->m_colorID != 0 ? baseColor->m_colorID : baseColor->m_defaultColorID);
-                ss << "Base Color: " << colorID;
+            auto rotation = m_selectedObject->getRotation();
+            if (Mod::get()->getSettingValue<bool>("show-object-rotation") && rotation != 0.0f) ss << "Rotation: " << rotation << "\n";
+            auto scaleX = m_selectedObject->getScaleX();
+            auto scaleY = m_selectedObject->getScaleY();
+            if (Mod::get()->getSettingValue<bool>("show-object-scale") && (scaleX != 1.0f || scaleY != 1.0f))
+                ss << "Scale: " << scaleX << ", " << scaleY << "\n";
+            auto baseColor = m_selectedObject->m_baseColor;
+            auto detailColor = m_selectedObject->m_detailColor;
+            if (Mod::get()->getSettingValue<bool>("show-object-base-color") && baseColor != nullptr) {
                 ccHSVValue hsv = baseColor->m_hsv;
                 if (hsv.h != 0.0f || hsv.s != 1.0f || hsv.v != 1.0f || hsv.absoluteSaturation != 0 || hsv.absoluteBrightness != 0) {
-                    ss << " + HSV(" << hsv.h << ", "
+                    ss << "HSV" << (detailColor != nullptr ? " 1" : "") << ": " << hsv.h << ", "
                         << (hsv.absoluteSaturation != 0 && hsv.s >= 0 ? "+" : "") << hsv.s << ", "
-                        << (hsv.absoluteBrightness != 0 && hsv.v >= 0 ? "+" : "") << hsv.v << ")";
+                        << (hsv.absoluteBrightness != 0 && hsv.v >= 0 ? "+" : "") << hsv.v << "\n";
                 }
-                ss << "\n";
             }
-            if (Mod::get()->getSettingValue<bool>("show-object-detail-color") && m_selectedObject->m_detailColor != nullptr) {
-                auto detailColor = m_selectedObject->m_detailColor;
-                auto colorID = colorIDToName(detailColor->m_colorID != 0 ? detailColor->m_colorID : detailColor->m_defaultColorID);
-                ss << "Detail Color: " << colorID;
+            if (Mod::get()->getSettingValue<bool>("show-object-detail-color") && detailColor != nullptr) {
                 ccHSVValue hsv = detailColor->m_hsv;
                 if (hsv.h != 0.0f || hsv.s != 1.0f || hsv.v != 1.0f || hsv.absoluteSaturation != 0 || hsv.absoluteBrightness != 0) {
-                    ss << " + HSV(" << hsv.h << ", "
+                    ss << "HSV" << (baseColor != nullptr ? " 2" : "") << ": " << hsv.h << ", "
                         << (hsv.absoluteSaturation != 0 && hsv.s >= 0 ? "+" : "") << hsv.s << ", "
-                        << (hsv.absoluteBrightness != 0 && hsv.v >= 0 ? "+" : "") << hsv.v << ")";
+                        << (hsv.absoluteBrightness != 0 && hsv.v >= 0 ? "+" : "") << hsv.v << "\n";
                 }
-                ss << "\n";
             }
         }
 
