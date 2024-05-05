@@ -8,3 +8,4 @@ Adds more object properties to the object info selection text in the level edito
 - Scale (X, Y)
 - Base Color HSV
 - Detail Color HSV
+- Object Address
