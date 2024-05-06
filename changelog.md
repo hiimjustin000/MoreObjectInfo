@@ -1,4 +1,7 @@
 # More Object Info Changelog
+## v1.0.5 (2024-05-06)
+- Small optimizations
+
 ## v1.0.4 (2024-05-05)
 - Added Object Address
 - Added iOS support
