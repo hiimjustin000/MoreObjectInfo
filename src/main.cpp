@@ -34,10 +34,10 @@ class $modify(MOIEditorUI, EditorUI) {
     void updateObjectInfoLabel() {
         EditorUI::updateObjectInfoLabel();
 
-        auto ss = std::stringstream();
-        ss << m_objectInfoLabel->getString();
+        if (GameManager::sharedState()->getGameVariable("0041") && m_selectedObject) {
+            auto ss = std::stringstream();
+            ss << m_objectInfoLabel->getString();
 
-        if (m_selectedObject) {
             if (m_fields->m_showObjectID) ss << "ID: " << m_selectedObject->m_objectID << "\n";
 
             if (m_fields->m_showObjectPosition)
@@ -228,8 +228,8 @@ class $modify(MOIEditorUI, EditorUI) {
 
             if (m_fields->m_showObjectAddress)
                 ss << "Address: " << std::hex << fmt::to_string(fmt::ptr(m_selectedObject)) << std::dec << "\n";
-        }
 
-        m_objectInfoLabel->setString(ss.str().c_str());
+            m_objectInfoLabel->setString(ss.str().c_str());
+        }
     }
 };
