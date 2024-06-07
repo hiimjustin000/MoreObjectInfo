@@ -1,4 +1,7 @@
 # More Object Info Changelog
+## v1.0.7 (2024-06-07)
+- Ported to Geometry Dash v2.206
+
 ## v1.0.6 (2024-05-19)
 - Added Object Type      
 - Tweaked display of scale and rotation values
