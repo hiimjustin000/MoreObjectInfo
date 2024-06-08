@@ -60,5 +60,10 @@
             "type": "bool",
             "default": false
         }
-    }
+    },
+    "tags": [
+        "editor",
+        "enhancement",
+        "offline"
+    ]
 }
