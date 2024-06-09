@@ -1,18 +1,13 @@
 cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
-    set(CMAKE_OSX_ARCHITECTURES "arm64")
-else()
-    set(CMAKE_OSX_ARCHITECTURES "x86_64")
-endif()
+set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-project(MoreObjectInfo VERSION 1.0.0)
+project(MoreObjectInfo VERSION 1.0.8)
 
 add_library(${PROJECT_NAME} SHARED
     src/main.cpp
-    # Add your cpp files here
 )
 
 if (NOT DEFINED ENV{GEODE_SDK})
