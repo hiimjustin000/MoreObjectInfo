@@ -1,4 +1,7 @@
 # More Object Info Changelog
+## v1.0.8 (2024-06-14)
+- Finalized the release of v1.0.8
+
 ## v1.0.8-beta.1 (2024-06-08)
 - Fixed a few things
 
