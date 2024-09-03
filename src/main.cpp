@@ -19,7 +19,7 @@ class $modify(MOIEditorUI, EditorUI) {
         if (!EditorUI::init(lel)) return false;
 
         auto mod = Mod::get();
-        auto& f = m_fields;
+        auto f = m_fields.self();
         f->m_showObjectID = mod->getSettingValue<bool>("show-object-id");
         f->m_showObjectPosition = mod->getSettingValue<bool>("show-object-position");
         f->m_showObjectRotation = mod->getSettingValue<bool>("show-object-rotation");
@@ -36,10 +36,9 @@ class $modify(MOIEditorUI, EditorUI) {
         EditorUI::updateObjectInfoLabel();
 
         if (GameManager::sharedState()->getGameVariable("0041") && m_selectedObject) {
-            auto ss = std::stringstream();
+            std::stringstream ss;
             ss << m_objectInfoLabel->getString();
-
-            auto& f = m_fields;
+            auto f = m_fields.self();
 
             if (f->m_showObjectID) ss << "ID: " << m_selectedObject->m_objectID << "\n";
 
@@ -132,7 +131,7 @@ class $modify(MOIEditorUI, EditorUI) {
                     case GameObjectType::AnimatedHazard: ss << "Animated Hazard"; break;
                     default: ss << "Unknown"; break;
                 }
-                ss << "\n";
+                ss << " (" << (int)m_selectedObject->m_objectType << ")\n";
             }
 
             if (f->m_showObjectAddress) ss << "Address: " << std::hex << fmt::to_string(fmt::ptr(m_selectedObject)) << std::dec << "\n";

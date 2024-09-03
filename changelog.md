@@ -1,4 +1,7 @@
 # More Object Info Changelog
+## v1.0.10 (2024-09-03)
+- Added the corresponding number to the object type display
+
 ## v1.0.9 (2024-09-02)
 - Added Enter Effect Object to the object type list
 - Changed the mod's logo
