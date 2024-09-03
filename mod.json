@@ -1,11 +1,11 @@
 {
-    "geode": "3.0.0-beta.1",
+    "geode": "3.4.0",
     "gd": {
         "win": "2.206",
         "mac": "2.206",
         "android": "2.206"
     },
-    "version": "v1.0.8",
+    "version": "v1.0.9",
     "id": "hiimjustin000.more_object_info",
     "name": "More Object Info",
     "developer": "hiimjustin000",
@@ -60,6 +60,11 @@
             "type": "bool",
             "default": false
         }
+    },
+    "links": {
+        "community": "https://discord.gg/QVKmbvBXA7",
+        "source": "https://github.com/hiimjustin000/MoreObjectInfo",
+        "homepage": "https://www.hiimjustin000.com"
     },
     "tags": [
         "editor",
