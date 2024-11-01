@@ -1,4 +1,8 @@
 # More Object Info Changelog
+## v1.0.11 (2024-10-31)
+- Changed the HSV display from "HSV 1/2" to "Base/Detail HSV"
+- Added "x" to the start of multiplicative saturation and value values
+
 ## v1.0.10 (2024-09-03)
 - Added the corresponding number to the object type display
 

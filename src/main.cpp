@@ -1,5 +1,3 @@
-#include <Geode/Geode.hpp>
-
 using namespace geode::prelude;
 
 #include <Geode/modify/EditorUI.hpp>
@@ -36,107 +34,100 @@ class $modify(MOIEditorUI, EditorUI) {
         EditorUI::updateObjectInfoLabel();
 
         if (GameManager::sharedState()->getGameVariable("0041") && m_selectedObject) {
-            std::stringstream ss;
-            ss << m_objectInfoLabel->getString();
+            std::string info = m_objectInfoLabel->getString();
             auto f = m_fields.self();
+            auto selectedObject = m_selectedObject;
 
-            if (f->m_showObjectID) ss << "ID: " << m_selectedObject->m_objectID << "\n";
+            if (f->m_showObjectID) info += fmt::format("ID: {}\n", selectedObject->m_objectID);
 
-            if (f->m_showObjectPosition) ss << "Position: " << m_selectedObject->getPositionX() << ", " << m_selectedObject->getPositionY() - 90.0f << "\n";
+            if (f->m_showObjectPosition) info += fmt::format("Position: {}, {}\n", selectedObject->getPositionX(), selectedObject->getPositionY() - 90.0f);
 
-            auto rotationX = m_selectedObject->getRotationX();
-            auto rotationY = m_selectedObject->getRotationY();
-            if (f->m_showObjectRotation && (rotationX != 0.0f || rotationY != 0.0f)) {
-                ss << "Rotation: " << rotationX;
-                if (rotationX != rotationY) ss << ", " << rotationY;
-                ss << "\n";
-            }
+            auto rotationX = selectedObject->getRotationX();
+            auto rotationY = selectedObject->getRotationY();
+            if (f->m_showObjectRotation && (rotationX != 0.0f || rotationY != 0.0f))
+                info += fmt::format("Rotation: {}{}\n", rotationX, rotationX != rotationY ? fmt::format(", {}", rotationY) : "");
 
-            auto scaleX = m_selectedObject->getScaleX();
-            auto scaleY = m_selectedObject->getScaleY();
-            if (f->m_showObjectScale && (scaleX != 1.0f || scaleY != 1.0f)) {
-                ss << "Scale: " << scaleX;
-                if (scaleX != scaleY) ss << ", " << scaleY;
-                ss << "\n";
-            }
+            auto scaleX = selectedObject->getScaleX();
+            auto scaleY = selectedObject->getScaleY();
+            if (f->m_showObjectScale && (scaleX != 1.0f || scaleY != 1.0f))
+                info += fmt::format("Scale: {}{}\n", scaleX, scaleX != scaleY ? fmt::format(", {}", scaleY) : "");
 
-            auto baseColor = m_selectedObject->m_baseColor;
-            auto detailColor = m_selectedObject->m_detailColor;
+            auto baseColor = selectedObject->m_baseColor;
+            auto detailColor = selectedObject->m_detailColor;
             if (f->m_showObjectBaseColor && baseColor) {
                 auto hsv = baseColor->m_hsv;
-                if (hsv.h != 0.0f || hsv.s != 1.0f || hsv.v != 1.0f || hsv.absoluteSaturation || hsv.absoluteBrightness) {
-                    ss << "HSV" << (detailColor ? " 1" : "") << ": " << hsv.h << ", "
-                        << (hsv.absoluteSaturation && hsv.s >= 0 ? "+" : "") << hsv.s << ", "
-                        << (hsv.absoluteBrightness && hsv.v >= 0 ? "+" : "") << hsv.v << "\n";
-                }
+                if (hsv.h != 0.0f || hsv.s != 1.0f || hsv.v != 1.0f || hsv.absoluteSaturation || hsv.absoluteBrightness)
+                    info += fmt::format("{}HSV: {}, {}{}, {}{}\n", detailColor ? "Base " : "", hsv.h,
+                        hsv.absoluteSaturation && hsv.s >= 0 ? "+" : "x", hsv.s,
+                        hsv.absoluteBrightness && hsv.v >= 0 ? "+" : "x", hsv.v);
             }
             if (f->m_showObjectDetailColor && detailColor) {
                 auto hsv = detailColor->m_hsv;
-                if (hsv.h != 0.0f || hsv.s != 1.0f || hsv.v != 1.0f || hsv.absoluteSaturation || hsv.absoluteBrightness) {
-                    ss << "HSV" << (baseColor ? " 2" : "") << ": " << hsv.h << ", "
-                        << (hsv.absoluteSaturation && hsv.s >= 0 ? "+" : "") << hsv.s << ", "
-                        << (hsv.absoluteBrightness && hsv.v >= 0 ? "+" : "") << hsv.v << "\n";
-                }
+                if (hsv.h != 0.0f || hsv.s != 1.0f || hsv.v != 1.0f || hsv.absoluteSaturation || hsv.absoluteBrightness)
+                    info += fmt::format("{}HSV: {}, {}{}, {}{}\n", baseColor ? "Detail " : "", hsv.h,
+                        hsv.absoluteSaturation && hsv.s >= 0 ? "+" : "x", hsv.s,
+                        hsv.absoluteBrightness && hsv.v >= 0 ? "+" : "x", hsv.v);
             }
 
             if (f->m_showObjectType) {
-                ss << "Type: ";
-                switch (m_selectedObject->m_objectType) {
-                    case GameObjectType::Solid: ss << "Solid"; break;
-                    case GameObjectType::Hazard: ss << "Hazard"; break;
-                    case GameObjectType::InverseGravityPortal: ss << "Inverse Gravity Portal"; break;
-                    case GameObjectType::NormalGravityPortal: ss << "Normal Gravity Portal"; break;
-                    case GameObjectType::ShipPortal: ss << "Ship Portal"; break;
-                    case GameObjectType::CubePortal: ss << "Cube Portal"; break;
-                    case GameObjectType::Decoration: ss << "Decoration"; break;
-                    case GameObjectType::YellowJumpPad: ss << "Yellow Jump Pad"; break;
-                    case GameObjectType::PinkJumpPad: ss << "Pink Jump Pad"; break;
-                    case GameObjectType::GravityPad: ss << "Gravity Pad"; break;
-                    case GameObjectType::YellowJumpRing: ss << "Yellow Jump Ring"; break;
-                    case GameObjectType::PinkJumpRing: ss << "Pink Jump Ring"; break;
-                    case GameObjectType::GravityRing: ss << "Gravity Ring"; break;
-                    case GameObjectType::InverseMirrorPortal: ss << "Inverse Mirror Portal"; break;
-                    case GameObjectType::NormalMirrorPortal: ss << "Normal Mirror Portal"; break;
-                    case GameObjectType::BallPortal: ss << "Ball Portal"; break;
-                    case GameObjectType::RegularSizePortal: ss << "Regular Size Portal"; break;
-                    case GameObjectType::MiniSizePortal: ss << "Mini Size Portal"; break;
-                    case GameObjectType::UfoPortal: ss << "Ufo Portal"; break;
-                    case GameObjectType::Modifier: ss << "Modifier"; break;
-                    case GameObjectType::Breakable: ss << "Breakable"; break;
-                    case GameObjectType::SecretCoin: ss << "Secret Coin"; break;
-                    case GameObjectType::DualPortal: ss << "Dual Portal"; break;
-                    case GameObjectType::SoloPortal: ss << "Solo Portal"; break;
-                    case GameObjectType::Slope: ss << "Slope"; break;
-                    case GameObjectType::WavePortal: ss << "Wave Portal"; break;
-                    case GameObjectType::RobotPortal: ss << "Robot Portal"; break;
-                    case GameObjectType::TeleportPortal: ss << "Teleport Portal"; break;
-                    case GameObjectType::GreenRing: ss << "Green Ring"; break;
-                    case GameObjectType::Collectible: ss << "Collectible"; break;
-                    case GameObjectType::UserCoin: ss << "User Coin"; break;
-                    case GameObjectType::DropRing: ss << "Drop Ring"; break;
-                    case GameObjectType::SpiderPortal: ss << "Spider Portal"; break;
-                    case GameObjectType::RedJumpPad: ss << "Red Jump Pad"; break;
-                    case GameObjectType::RedJumpRing: ss << "Red Jump Ring"; break;
-                    case GameObjectType::CustomRing: ss << "Custom Ring"; break;
-                    case GameObjectType::DashRing: ss << "Dash Ring"; break;
-                    case GameObjectType::GravityDashRing: ss << "Gravity Dash Ring"; break;
-                    case GameObjectType::CollisionObject: ss << "Collision Object"; break;
-                    case GameObjectType::Special: ss << "Special"; break;
-                    case GameObjectType::SwingPortal: ss << "Swing Portal"; break;
-                    case GameObjectType::GravityTogglePortal: ss << "Gravity Toggle Portal"; break;
-                    case GameObjectType::SpiderOrb: ss << "Spider Orb"; break;
-                    case GameObjectType::SpiderPad: ss << "Spider Pad"; break;
-                    case GameObjectType::EnterEffectObject: ss << "Enter Effect Object"; break;
-                    case GameObjectType::TeleportOrb: ss << "Teleport Orb"; break;
-                    case GameObjectType::AnimatedHazard: ss << "Animated Hazard"; break;
-                    default: ss << "Unknown"; break;
+                auto objectType = selectedObject->m_objectType;
+                auto typeStr = "";
+                switch (objectType) {
+                    case GameObjectType::Solid: typeStr = "Solid"; break;
+                    case GameObjectType::Hazard: typeStr = "Hazard"; break;
+                    case GameObjectType::InverseGravityPortal: typeStr = "Inverse Gravity Portal"; break;
+                    case GameObjectType::NormalGravityPortal: typeStr = "Normal Gravity Portal"; break;
+                    case GameObjectType::ShipPortal: typeStr = "Ship Portal"; break;
+                    case GameObjectType::CubePortal: typeStr = "Cube Portal"; break;
+                    case GameObjectType::Decoration: typeStr = "Decoration"; break;
+                    case GameObjectType::YellowJumpPad: typeStr = "Yellow Jump Pad"; break;
+                    case GameObjectType::PinkJumpPad: typeStr = "Pink Jump Pad"; break;
+                    case GameObjectType::GravityPad: typeStr = "Gravity Pad"; break;
+                    case GameObjectType::YellowJumpRing: typeStr = "Yellow Jump Ring"; break;
+                    case GameObjectType::PinkJumpRing: typeStr = "Pink Jump Ring"; break;
+                    case GameObjectType::GravityRing: typeStr = "Gravity Ring"; break;
+                    case GameObjectType::InverseMirrorPortal: typeStr = "Inverse Mirror Portal"; break;
+                    case GameObjectType::NormalMirrorPortal: typeStr = "Normal Mirror Portal"; break;
+                    case GameObjectType::BallPortal: typeStr = "Ball Portal"; break;
+                    case GameObjectType::RegularSizePortal: typeStr = "Regular Size Portal"; break;
+                    case GameObjectType::MiniSizePortal: typeStr = "Mini Size Portal"; break;
+                    case GameObjectType::UfoPortal: typeStr = "Ufo Portal"; break;
+                    case GameObjectType::Modifier: typeStr = "Modifier"; break;
+                    case GameObjectType::Breakable: typeStr = "Breakable"; break;
+                    case GameObjectType::SecretCoin: typeStr = "Secret Coin"; break;
+                    case GameObjectType::DualPortal: typeStr = "Dual Portal"; break;
+                    case GameObjectType::SoloPortal: typeStr = "Solo Portal"; break;
+                    case GameObjectType::Slope: typeStr = "Slope"; break;
+                    case GameObjectType::WavePortal: typeStr = "Wave Portal"; break;
+                    case GameObjectType::RobotPortal: typeStr = "Robot Portal"; break;
+                    case GameObjectType::TeleportPortal: typeStr = "Teleport Portal"; break;
+                    case GameObjectType::GreenRing: typeStr = "Green Ring"; break;
+                    case GameObjectType::Collectible: typeStr = "Collectible"; break;
+                    case GameObjectType::UserCoin: typeStr = "User Coin"; break;
+                    case GameObjectType::DropRing: typeStr = "Drop Ring"; break;
+                    case GameObjectType::SpiderPortal: typeStr = "Spider Portal"; break;
+                    case GameObjectType::RedJumpPad: typeStr = "Red Jump Pad"; break;
+                    case GameObjectType::RedJumpRing: typeStr = "Red Jump Ring"; break;
+                    case GameObjectType::CustomRing: typeStr = "Custom Ring"; break;
+                    case GameObjectType::DashRing: typeStr = "Dash Ring"; break;
+                    case GameObjectType::GravityDashRing: typeStr = "Gravity Dash Ring"; break;
+                    case GameObjectType::CollisionObject: typeStr = "Collision Object"; break;
+                    case GameObjectType::Special: typeStr = "Special"; break;
+                    case GameObjectType::SwingPortal: typeStr = "Swing Portal"; break;
+                    case GameObjectType::GravityTogglePortal: typeStr = "Gravity Toggle Portal"; break;
+                    case GameObjectType::SpiderOrb: typeStr = "Spider Orb"; break;
+                    case GameObjectType::SpiderPad: typeStr = "Spider Pad"; break;
+                    case GameObjectType::EnterEffectObject: typeStr = "Enter Effect Object"; break;
+                    case GameObjectType::TeleportOrb: typeStr = "Teleport Orb"; break;
+                    case GameObjectType::AnimatedHazard: typeStr = "Animated Hazard"; break;
+                    default: typeStr = "Unknown"; break;
                 }
-                ss << " (" << (int)m_selectedObject->m_objectType << ")\n";
+                info += fmt::format("Type: {} ({})\n", typeStr, (int)objectType);
             }
 
-            if (f->m_showObjectAddress) ss << "Address: " << std::hex << fmt::to_string(fmt::ptr(m_selectedObject)) << std::dec << "\n";
+            if (f->m_showObjectAddress) info += fmt::format("Address: {}\n", fmt::ptr(selectedObject));
 
-            m_objectInfoLabel->setString(ss.str().c_str());
+            m_objectInfoLabel->setString(info.c_str());
         }
     }
 };

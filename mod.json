@@ -1,16 +1,15 @@
 {
-    "geode": "3.4.0",
+    "geode": "3.9.0",
     "gd": {
         "win": "2.206",
         "mac": "2.206",
         "android": "2.206"
     },
-    "version": "v1.0.10",
+    "version": "v1.0.11",
     "id": "hiimjustin000.more_object_info",
     "name": "More Object Info",
     "developer": "hiimjustin000",
-    "description": "A mod that adds more object properties to the object info text in the level editor.",
-    "repository": "https://github.com/hiimjustin000/MoreObjectInfo",
+    "description": "A mod that adds more object info to the level editor.",
     "settings": {
         "show-object-id": {
             "name": "Show Object ID",
@@ -69,6 +68,8 @@
     "tags": [
         "editor",
         "enhancement",
-        "offline"
+        "interface",
+        "offline",
+        "utility"
     ]
 }
