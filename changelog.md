@@ -1,4 +1,7 @@
 # More Object Info Changelog
+## v1.0.12-beta.1 (2024-11-13)
+- Ported to Geometry Dash v2.207
+
 ## v1.0.11 (2024-10-31)
 - Changed the HSV display from "HSV 1/2" to "Base/Detail HSV"
 - Added "x" to the start of multiplicative saturation and value values
