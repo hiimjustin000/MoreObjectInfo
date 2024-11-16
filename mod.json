@@ -1,11 +1,11 @@
 {
-    "geode": "4.0.0-alpha.1",
+    "geode": "4.0.0-beta.1",
     "gd": {
         "win": "2.2074",
         "mac": "2.2074",
         "android": "2.2074"
     },
-    "version": "v1.0.12-beta.1",
+    "version": "v1.0.12",
     "id": "hiimjustin000.more_object_info",
     "name": "More Object Info",
     "developer": "hiimjustin000",

@@ -33,7 +33,7 @@ class $modify(MOIEditorUI, EditorUI) {
     void updateObjectInfoLabel() {
         EditorUI::updateObjectInfoLabel();
 
-        if (GameManager::sharedState()->getGameVariable("0041") && m_selectedObject) {
+        if (GameManager::get()->getGameVariable("0041") && m_selectedObject) {
             std::string info = m_objectInfoLabel->getString();
             auto f = m_fields.self();
             auto selectedObject = m_selectedObject;
